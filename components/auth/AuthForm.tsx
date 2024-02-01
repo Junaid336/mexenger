@@ -60,6 +60,7 @@ const AuthForm = () => {
                          errors={errors} 
                          id='name'
                          type='text'
+                         disabled={isLoading}
                        />
                     )}
                     <Input 
@@ -68,6 +69,7 @@ const AuthForm = () => {
                      errors={errors} 
                      id='email'
                      type='text'
+                     disabled={isLoading}
                     />
                     <Input 
                      label="Password" 
@@ -75,6 +77,7 @@ const AuthForm = () => {
                      errors={errors} 
                      id='password'
                      type='text'
+                     disabled={isLoading}
                     />
                     <div>
                         <Button disabled={isLoading} fullWidth type="submit" >
