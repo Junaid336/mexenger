@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { deflate } from 'zlib';
+import axios from 'axios';
 
 import { BsGithub, BsGoogle  } from 'react-icons/bs';
 
@@ -39,7 +40,7 @@ const AuthForm = () => {
         setIsLoading(true)
 
         if(variant === 'REGISTER') {
-
+            axios.post('/api/register', data)
         } else {
 
         }
