@@ -1,8 +1,9 @@
 'use client'
 
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { deflate } from 'zlib';
 import axios from 'axios';
 import { toast } from "react-hot-toast";
@@ -20,8 +21,16 @@ type Variant = 'LOGIN' | 'REGISTER';
 
 
 const AuthForm = () => {
+    const session = useSession();
+    const router = useRouter();
     const [variant, setVariant] = useState<Variant>('LOGIN');
     const [isLoading, setIsLoading] = useState(false); 
+
+    useEffect(() => {
+        if (session?.status === 'authenticated') {
+          router.push('/users')
+        }
+      }, [session?.status, router]);
 
     const toggleVariant = (()=>{
         variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN')
@@ -44,6 +53,20 @@ const AuthForm = () => {
 
         if(variant === 'REGISTER') {
             axios.post('/api/register', data)
+            .then(() => signIn('credentials', {
+                ...data,
+                redirect: false,
+              }))
+              .then((callback) => {
+                if (callback?.error) {
+                  toast.error('Invalid credentials!');
+                }
+        
+                if (callback?.ok) {
+                  toast.success('Success!');
+                  router.push('/users')
+                }
+              })
             .catch(() => toast.error('Something went wrong!'))
             .finally(() => setIsLoading(false))
         } 
@@ -60,6 +83,7 @@ const AuthForm = () => {
       
               if (callback?.ok) {
                 toast.success("Logged In!")
+                router.push('/users')
               }
             })
             .finally(() => setIsLoading(false))
