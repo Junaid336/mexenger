@@ -1,15 +1,18 @@
 'use client'
 
+import { signIn } from 'next-auth/react';
 import { useCallback, useEffect, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { deflate } from 'zlib';
 import axios from 'axios';
+import { toast } from "react-hot-toast";
 
-import { BsGithub, BsGoogle  } from 'react-icons/bs';
+import { FcGoogle } from "react-icons/fc";
 
 import Input from '../inputs/Input';
 import Button from '../Button';
 import AuthSocialButton from '../AuthSocialButton';
+
 
 
 
@@ -41,13 +44,42 @@ const AuthForm = () => {
 
         if(variant === 'REGISTER') {
             axios.post('/api/register', data)
-        } else {
+            .catch(() => toast.error('Something went wrong!'))
+            .finally(() => setIsLoading(false))
+        } 
 
-        }
+        if (variant === 'LOGIN') {
+            signIn('credentials', {
+              ...data,
+              redirect: false
+            })
+            .then((callback) => {
+              if (callback?.error) {
+                toast.error('Invalid credentials!');
+              }
+      
+              if (callback?.ok) {
+                toast.success("Logged In!")
+              }
+            })
+            .finally(() => setIsLoading(false))
+          }
     }
 
     const socialAction = (action: string) => {
+        setIsLoading(true)
 
+        signIn(action, { redirect: false })
+        .then((callback) => {
+            if (callback?.error) {
+                toast.error('Invalid credentials!');
+            }
+
+            if (callback?.ok) {
+                toast.success('/Logged In')
+            }
+        })
+        .finally(() => setIsLoading(false));
     }
 
     return (
@@ -106,11 +138,7 @@ const AuthForm = () => {
                     </div>
                     <div className="mt-6 flex gap-2">
                         <AuthSocialButton 
-                         icon={BsGithub} 
-                         onClick={() => socialAction('github')} 
-                        />
-                        <AuthSocialButton 
-                         icon={BsGoogle} 
+                         icon={FcGoogle} 
                          onClick={() => socialAction('google')} 
                         />
                     </div>
