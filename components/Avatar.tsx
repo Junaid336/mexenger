@@ -20,8 +20,8 @@ const Avatar: React.FC<AvatarProps> = ({ user }) => {
         overflow-hidden
         h-9 
         w-9 
-        md:h-11 
-        md:w-11
+        md:h-10
+        md:w-10
       ">
         <Image
           fill
