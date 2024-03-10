@@ -39,9 +39,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     }
   } = useForm<FieldValues>({
     defaultValues: {
-    // @ts-expect-error
       name: currentUser?.name,
-    // @ts-expect-error
       image: currentUser?.image
     }
   });

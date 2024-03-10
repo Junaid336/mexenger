@@ -7,8 +7,7 @@ import { pusherClient } from "@/app/libs/pusher";
 import useConversation from "@/app/hooks/useConversation";
 import MessageBox from "./MessageBox";
 import { FullMessageType } from "@/app/types";
-import {find} from "lodash"
-
+import { find } from "lodash";
 
 interface BodyProps {
   initialMessages: FullMessageType[];

@@ -1,11 +1,10 @@
 import getConversationById from "@/app/actions/getConversationById";
 import getMessages from "@/app/actions/getMessages";
 
-
-import Header from "@/components/conversations/conversation/Header";
-import Body from "@/components/conversations/conversation/Body";
-import Form from "@/components/conversations/conversation/Form";
-import EmptyState from "@/components/EmptyState";
+import Header from "./components/Header";
+import Body from "./components/Body";
+import Form from "./components/Form";
+import EmptyState from "@/app/components/EmptyState";
 
 interface IParams {
   conversationId: string;
