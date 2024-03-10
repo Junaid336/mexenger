@@ -28,13 +28,17 @@ const AuthForm = () => {
 
     useEffect(() => {
         if (session?.status === 'authenticated') {
-          router.push('/users')
+          router.push('/conversations')
         }
       }, [session?.status, router]);
 
-    const toggleVariant = (()=>{
-        variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN')
-    })
+    const toggleVariant = useCallback(() => {
+        if (variant === 'LOGIN') {
+            setVariant('REGISTER');
+        } else {
+            setVariant('LOGIN');
+        }
+    }, [variant]);
 
     const {
         register,
@@ -64,7 +68,7 @@ const AuthForm = () => {
         
                 if (callback?.ok) {
                   toast.success('Success!');
-                  router.push('/users')
+                  router.push('/conversations')
                 }
               })
             .catch(() => toast.error('Something went wrong!'))
@@ -83,7 +87,7 @@ const AuthForm = () => {
       
               if (callback?.ok) {
                 toast.success("Logged In!")
-                router.push('/users')
+                router.push('/conversations')
               }
             })
             .finally(() => setIsLoading(false))
@@ -133,7 +137,7 @@ const AuthForm = () => {
                      register={register} 
                      errors={errors} 
                      id='password'
-                     type='text'
+                     type='password'
                      disabled={isLoading}
                     />
                     <div>
